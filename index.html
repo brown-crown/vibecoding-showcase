@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCoding — AI 网页制作技能教学 | 《管理沟通》第二小组期末展示</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts: Inter & ZCOOL KuaiLe (手账标题感) & JetBrains Mono (代码窗口) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <!-- 引入 FontAwesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                        cute: ['"ZCOOL KuaiLe"', 'cursive', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        macaronPink: '#FFD6E0',
+                        macaronPinkDark: '#FF8FAB',
+                        macaronMint: '#C8F4E7',
+                        macaronMintDark: '#4FD1C5',
+                        macaronCream: '#FFFDF9',
+                        codeBg: '#1E2235',
+                    },
+                    boxShadow: {
+                        'retro': '6px 6px 0px 0px rgba(45, 55, 72, 0.12)',
+                        'retro-pink': '6px 6px 0px 0px #FF8FAB',
+                        'retro-mint': '6px 6px 0px 0px #4FD1C5',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 手账网格背景与柔和马卡龙渐变 */
+        body {
+            background-color: #FFFDF9;
+            background-image: 
+                radial-gradient(circle at 12% 15%, rgba(255, 214, 224, 0.55) 0%, transparent 38%),
+                radial-gradient(circle at 88% 25%, rgba(200, 244, 231, 0.65) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(255, 214, 224, 0.4) 0%, transparent 45%),
+                linear-gradient(to right, rgba(79, 209, 197, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 143, 171, 0.08) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+        }
+
+        /* 像素描边艺术字效果，还原策划书封面标题 */
+        .pixel-title {
+            text-shadow: 
+                2px 2px 0px #2D3748,
+                -1px -1px 0px #2D3748,
+                1px -1px 0px #2D3748,
+                -1px 1px 0px #2D3748,
+                4px 4px 0px #FF8FAB;
+        }
+
+        /* 浏览器窗口顶部圆点按钮 */
+        .win-dots span {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 9999px;
+        }
+
+        /* 浮动动画 */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .animate-float {
+            animation: floatSlow 3.5s ease-in-out infinite;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF5F7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFB3C6;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF8FAB;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-pink-200 selection:text-slate-900">
+
+    <!-- 全局顶部提示 Toast (替代 alert) -->
+    <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform -translate-y-4">
+        <div class="bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl border-2 border-teal-300 flex items-center gap-3 text-sm md:text-base font-medium">
+            <i class="fa-solid fa-circle-check text-teal-300 text-lg"></i>
+            <span id="toast-msg">操作成功！</span>
+        </div>
+    </div>
+
+    <!-- 顶部固定导航栏 -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-white/85 border-b-2 border-pink-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- 左侧品牌标识 -->
+            <a href="#hero" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-400 to-teal-300 flex items-center justify-center text-white font-bold shadow-sm group-hover:scale-105 transition">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div>
+                    <span class="font-extrabold text-lg tracking-tight text-slate-800">VibeCoding</span>
+                    <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 border border-teal-300">
+                        《管理沟通》第二小组
+                    </span>
+                </div>
+            </a>
+
+            <!-- 导航链接（大屏课堂展示快速跳转） -->
+            <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-sm font-semibold">
+                <a href="#purpose" class="px-3 py-1.5 rounded-xl hover:bg-pink-100/80 text-slate-700 hover:text-pink-600 transition">1. 创意与目的</a>
+                <a href="#process" class="px-3 py-1.5 rounded-xl hover:bg-teal-100/80 text-slate-700 hover:text-teal-700 transition">2. 过程与分工</a>
+                <a href="#progress" class="px-3 py-1.5 rounded-xl hover:bg-pink-100/80 text-slate-700 hover:text-pink-600 transition">3. 目前进度</a>
+                <a href="#showcase" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-pink-100 to-teal-100 text-slate-900 border border-pink-300 shadow-sm hover:shadow transition">4. 成果呈现 ✨</a>
+                <a href="#challenges" class="px-3 py-1.5 rounded-xl hover:bg-amber-100/80 text-slate-700 hover:text-amber-700 transition">5. 难点与反思</a>
+                <a href="#feedback" class="px-3 py-1.5 rounded-xl bg-slate-800 text-white hover:bg-slate-700 transition">6. 倾听组互动</a>
+            </nav>
+
+            <!-- 课堂模式全屏切换按钮 -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleFullScreen()" class="px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-200 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition" title="全屏投影展示">
+                    <i class="fa-solid fa-expand"></i>
+                    <span class="hidden sm:inline">大屏投影</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容容器 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16 sm:space-y-24">
+
+        <!-- ==========================================
+             首屏 HERO 区：还原策划书封面视觉与核心信息
+        =========================================== -->
+        <section id="hero" class="relative pt-2 sm:pt-4">
+            <div class="bg-white/90 rounded-3xl border-2 border-slate-800 shadow-retro p-6 sm:p-10 lg:p-12 relative overflow-hidden">
+                <!-- 装饰角标 -->
+                <div class="absolute -top-6 -right-6 w-32 h-32 bg-teal-200/50 rounded-full blur-xl pointer-events-none"></div>
+                <div class="absolute -bottom-8 -left-8 w-40 h-40 bg-pink-200/60 rounded-full blur-xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+                    <!-- 左侧文字介绍 -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- 课程与真实性原则徽章 -->
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-pink-100 text-pink-700 border border-pink-300">
+                                <i class="fa-solid fa-graduation-cap"></i> 《管理沟通》期末实训汇报
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-teal-100 text-teal-800 border border-teal-300">
+                                <i class="fa-solid fa-shield-heart"></i> 实训准则：真实为第一原则
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
+                                技能教学类项目
+                            </span>
+                        </div>
+
+                        <!-- 主标题 -->
+                        <div>
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white pixel-title mb-3">
+                                VibeCoding
+                            </h1>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 flex items-center gap-2">
+                                <span>AI 网页制作技能教学</span>
+                                <span class="text-xl sm:text-2xl">✨</span>
+                            </h2>
+                        </div>
+
+                        <!-- 核心理念卡片 -->
+                        <div class="bg-gradient-to-r from-pink-50 via-white to-teal-50 border-2 border-dashed border-pink-300 rounded-2xl p-4 sm:p-5">
+                            <p class="text-xs font-bold uppercase tracking-wider text-pink-500 mb-1">核心理念 Core Philosophy</p>
+                            <p class="text-lg sm:text-xl font-extrabold text-slate-800">
+                                “降低数字创作门槛，用 AI 赋能创意落地”
+                            </p>
+                            <div class="mt-3 flex flex-wrap gap-2 text-xs sm:text-sm font-semibold text-slate-600">
+                                <span class="px-2.5 py-1 bg-white rounded-lg border border-slate-200">🎈 有趣</span>
+                                <span class="px-2.5 py-1 bg-white rounded-lg border border-slate-200">🧩 简单</span>
+                                <span class="px-2.5 py-1 bg-white rounded-lg border border-slate-200">💎 有价值</span>
+                                <span class="px-2.5 py-1 bg-white rounded-lg border border-slate-200">🚀 好落地</span>
+                            </div>
+                        </div>
+
+                        <!-- 小组成员与周期信息 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-pink-200 text-pink-700 flex items-center justify-center text-lg font-bold shrink-0">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-500 font-medium">汇报团队：第二小组</div>
+                                    <div class="text-sm sm:text-base font-bold text-slate-800">黄晓琳 · 郑楹 · 赖俊中</div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-teal-200 text-teal-800 flex items-center justify-center text-lg font-bold shrink-0">
+                                    <i class="fa-regular fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-500 font-medium">项目周期（共5周）</div>
+                                    <div class="text-sm sm:text-base font-bold text-slate-800">2026.10.22 — 11.20</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 快速导航按钮 -->
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <a href="#showcase" class="px-6 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm sm:text-base shadow-retro-pink transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                                <i class="fa-solid fa-play text-pink-400"></i>
+                                <span>直接查看最终作品与演示</span>
+                            </a>
+                            <button onclick="openPlanModal()" class="px-6 py-3 rounded-2xl bg-white hover:bg-teal-50 text-slate-800 border-2 border-slate-800 font-bold text-sm sm:text-base shadow-retro-mint transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                                <i class="fa-solid fa-file-lines text-teal-600"></i>
+                                <span>在线查阅项目策划书</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 右侧手账代码窗口视觉（呼应策划书封面） -->
+                    <div class="lg:col-span-5">
+                        <div class="bg-codeBg rounded-2xl border-2 border-slate-800 shadow-retro overflow-hidden animate-float">
+                            <!-- 窗口顶部栏 -->
+                            <div class="bg-slate-800 px-4 py-2.5 flex items-center justify-between border-b border-slate-700">
+                                <div class="win-dots flex gap-1.5">
+                                    <span class="bg-rose-400"></span>
+                                    <span class="bg-amber-300"></span>
+                                    <span class="bg-emerald-400"></span>
+                                </div>
+                                <span class="text-xs font-mono text-slate-300">AI 生成中... vibecoding.cn</span>
+                                <span class="text-xs px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 font-mono">HTML+JS</span>
+                            </div>
+                            <!-- 对话气泡模拟 -->
+                            <div class="p-5 space-y-4 font-sans">
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-xs font-bold shrink-0">萌新</div>
+                                    <div class="bg-slate-700/90 text-pink-100 text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl rounded-tl-none border border-pink-400/30">
+                                        “我不想慢慢学代码了🥺 帮我制作一个粉色和薄荷绿配色的情绪记录网页吧！”
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2.5 justify-end">
+                                    <div class="bg-teal-900/70 text-teal-100 text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl rounded-tr-none border border-teal-400/40">
+                                        “好的！正在用自然语言为你生成专属可交互网页 ✨”
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-teal-400 flex items-center justify-center text-slate-900 text-xs font-bold shrink-0">AI</div>
+                                </div>
+                                <!-- 代码片段展示 -->
+                                <div class="bg-slate-950/90 rounded-xl p-3.5 font-mono text-xs text-slate-300 border border-slate-700/80 leading-relaxed overflow-x-auto">
+                                    <div><span class="text-pink-400">&lt;!DOCTYPE html&gt;</span></div>
+                                    <div><span class="text-teal-300">&lt;html</span> <span class="text-amber-200">lang</span>=<span class="text-emerald-300">"zh-CN"</span><span class="text-teal-300">&gt;</span></div>
+                                    <div class="pl-3"><span class="text-teal-300">&lt;title&gt;</span>My Mood 情绪记录<span class="text-teal-300">&lt;/title&gt;</span></div>
+                                    <div class="pl-3"><span class="text-slate-500">&lt;!-- 零代码基础，用提示词驱动创意 --&gt;</span></div>
+                                    <div class="pl-3"><span class="text-teal-300">&lt;div</span> <span class="text-amber-200">class</span>=<span class="text-emerald-300">"mood-card"</span><span class="text-teal-300">&gt;</span>和情绪和解 ♡<span class="text-teal-300">&lt;/div&gt;</span></div>
+                                    <div><span class="text-teal-300">&lt;/html&gt;</span></div>
+                                </div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300">
+                                        <i class="fa-solid fa-circle-check"></i> 生成完成！零基础可上手
+                                    </span>
+                                    <a href="#mymood-demo" class="text-xs font-bold text-pink-300 hover:text-pink-200 underline">
+                                        点此试玩样例 →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             板块一：项目创意与目的 (Creative & Purpose)
+        =========================================== -->
+        <section id="purpose" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b-2 border-pink-200 pb-3">
+                <div>
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-pink-500">SECTION 01 · CREATIVE & PURPOSE</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">一、项目创意与目的</h2>
+                </div>
+                <p class="text-sm text-slate-500 font-medium">为什么做这个项目？为谁解决什么问题？</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 1. 选题背景与创意来源 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-pink-100 border border-pink-300 text-pink-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-800 mb-3">选题背景与创意来源</h3>
+                        <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-4">
+                            随着生成式 AI 深度融入日常，普通人仅凭自然语言指令即可完成内容创作。我们小组在前期头脑风暴中对比了“调研类”、“创意传播类”与“技能教学类”方向，最终一致认为<strong>“AI 网页制作技能教学（VibeCoding）”</strong>最具实用传播价值。
+                        </p>
+                    </div>
+                    <div class="bg-pink-50 rounded-2xl p-3.5 border border-pink-200 text-xs sm:text-sm text-pink-900 font-medium">
+                        💡 <strong>核心洞察：</strong>很多同学和创作爱好者有做网页的想法，却被传统代码语法劝退。我们用“保姆级视频+图文”打破技术壁垒。
+                    </div>
+                </div>
+
+                <!-- 2. 对外目标：赋能零基础受众 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro-mint flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-teal-100 border border-teal-300 text-teal-700 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-earth-asia"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-800 mb-3">对外目标：赋能零基础大众</h3>
+                        <ul class="space-y-3 text-sm sm:text-base text-slate-600">
+                            <li class="flex items-start gap-2.5">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold mt-0.5 shrink-0">1</span>
+                                <span><strong>内容产出：</strong>产出 1 个可交互演示网页样例 + 1 条实操教学视频 + 1 份配套图文教程。</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold mt-0.5 shrink-0">2</span>
+                                <span><strong>技能普及：</strong>帮助学生与创作爱好者掌握用 AI 提示词生成网页的方法，实现个人创意落地。</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold mt-0.5 shrink-0">3</span>
+                                <span><strong>传播指标：</strong>在抖音、小红书等多平台发布，目标累计浏览 1000+，收获真实互动与操作反馈。</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-teal-700">
+                        <span>受众画像：学生 / 零基础小白</span>
+                        <span>关键词：人机协作 · 数字素养</span>
+                    </div>
+                </div>
+
+                <!-- 3. 对内目标：管理沟通实践成长 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro-pink flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 text-amber-700 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-people-arrows"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-800 mb-3">对内目标：团队沟通与综合实践</h3>
+                        <ul class="space-y-3 text-sm sm:text-base text-slate-600">
+                            <li class="flex items-start gap-2.5">
+                                <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold mt-0.5 shrink-0">1</span>
+                                <span><strong>高效组织沟通：</strong>运用《管理沟通》所学理论，明确角色分工，建立例会同步与审稿机制。</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold mt-0.5 shrink-0">2</span>
+                                <span><strong>对外受众沟通：</strong>站在零基础学习者视角设计讲解逻辑，降低专业术语理解门槛，积极回复评论区答疑。</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold mt-0.5 shrink-0">3</span>
+                                <span><strong>全流程运营：</strong>完整经历选题、策划、制作、发布、数据复盘的闭环训练。</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-700">
+                        <span>内部协同：三人小组闭环</span>
+                        <span>理论结合实践</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             板块二：项目完成过程与分工 (Process & Teamwork)
+        =========================================== -->
+        <section id="process" class="scroll-mt-24 space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b-2 border-teal-200 pb-3">
+                <div>
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-teal-600">SECTION 02 · PROCESS & TEAMWORK</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">二、项目完成过程、团队分工与 AI 边界</h2>
+                </div>
+                <p class="text-sm text-slate-500 font-medium">5周推进时间轴 · 角色协同 · 如实披露AI使用情况</p>
+            </div>
+
+            <!-- 4阶段可视化时间轴 -->
+            <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 sm:p-8 shadow-retro">
+                <h3 class="text-lg font-extrabold text-slate-800 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-timeline text-pink-500"></i>
+                    <span>项目四阶段推进时间轴（10.22 — 11.20）</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <!-- 阶段 1 -->
+                    <div class="relative bg-pink-50/70 rounded-2xl p-5 border-2 border-pink-200 hover:border-pink-400 transition">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-pink-500 text-white text-xs font-bold">阶段一 · 启动期</span>
+                            <span class="text-xs font-mono font-bold text-pink-700">10.22 - 10.26</span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-800 text-base mb-2">头脑风暴与选题对齐</h4>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            小组三人开展多轮线上研讨，排除调研与纯科普方案，最终独立思考定题《VibeCoding：AI 网页制作技能教学》，明确受众与交付物清单。
+                        </p>
+                    </div>
+
+                    <!-- 阶段 2 -->
+                    <div class="relative bg-teal-50/70 rounded-2xl p-5 border-2 border-teal-200 hover:border-teal-400 transition">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-teal-600 text-white text-xs font-bold">阶段二 · 准备期</span>
+                            <span class="text-xs font-mono font-bold text-teal-800">10.27 - 11.02</span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-800 text-base mb-2">策划书、脚本与演示网页</h4>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            10.31 准时提交项目策划书；撰写通俗易懂的教学视频脚本；通过 AI 提示词调试搭建出“My Mood 情绪记录/情绪垃圾桶”教学演示网页。
+                        </p>
+                    </div>
+
+                    <!-- 阶段 3 -->
+                    <div class="relative bg-amber-50/70 rounded-2xl p-5 border-2 border-amber-200 hover:border-amber-400 transition">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-white text-xs font-bold">阶段三 · 执行期</span>
+                            <span class="text-xs font-mono font-bold text-amber-800">11.03 - 11.06</span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-800 text-base mb-2">视频录制剪辑与图文制作</h4>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            对照脚本完成实操录屏与配音讲解，进行精细剪辑、加字幕与画面优化；同步提炼实操步骤，排版制作配套图文学习教程。
+                        </p>
+                    </div>
+
+                    <!-- 阶段 4 -->
+                    <div class="relative bg-indigo-50/70 rounded-2xl p-5 border-2 border-indigo-200 hover:border-indigo-400 transition">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-xs font-bold">阶段四 · 发布复盘</span>
+                            <span class="text-xs font-mono font-bold text-indigo-800">11.07 - 11.20</span>
+                        </div>
+                        <h4 class="font-extrabold text-slate-800 text-base mb-2">多平台上线与数据复盘</h4>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            实操视频发布至抖音，图文教程发布至小红书；持续收集评论区提问并答疑，归档项目成果包，撰写最终总结报告并准备课堂展示。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 小组三人分工 + 协作机制与AI边界 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- 三人分工详情 (占7列) -->
+                <div class="lg:col-span-7 bg-white rounded-3xl border-2 border-slate-800 p-6 sm:p-7 shadow-retro space-y-4">
+                    <h3 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-user-check text-teal-600"></i>
+                        <span>小组三人详细分工（责任到人 · 互相补位）</span>
+                    </h3>
+                    <div class="space-y-3.5">
+                        <!-- 黄晓琳 -->
+                        <div class="p-4 rounded-2xl bg-pink-50/60 border border-pink-200 flex flex-col sm:flex-row sm:items-center gap-3">
+                            <div class="flex items-center gap-3 sm:w-48 shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-pink-400 text-white font-bold flex items-center justify-center">黄</div>
+                                <div>
+                                    <div class="font-extrabold text-slate-800">黄晓琳</div>
+                                    <div class="text-xs font-semibold text-pink-600">项目统筹与文稿撰写</div>
+                                </div>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600">
+                                组织前期选题头脑风暴，协调周例会进度；主笔撰写并修订《项目策划书》与《项目成果总结报告》，把控整体逻辑规范。
+                            </p>
+                        </div>
+
+                        <!-- 郑楹 -->
+                        <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-200 flex flex-col sm:flex-row sm:items-center gap-3">
+                            <div class="flex items-center gap-3 sm:w-48 shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-teal-500 text-white font-bold flex items-center justify-center">郑</div>
+                                <div>
+                                    <div class="font-extrabold text-slate-800">郑楹</div>
+                                    <div class="text-xs font-semibold text-teal-700">内容创作与视频制作</div>
+                                </div>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600">
+                                撰写教学视频分镜脚本；使用 AI 工具提前调试搭建教学演示网页样例；负责实操录屏、配音录制、视频发布与后台数据统计分析。
+                            </p>
+                        </div>
+
+                        <!-- 赖俊中 -->
+                        <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 flex flex-col sm:flex-row sm:items-center gap-3">
+                            <div class="flex items-center gap-3 sm:w-48 shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center">赖</div>
+                                <div>
+                                    <div class="font-extrabold text-slate-800">赖俊中</div>
+                                    <div class="text-xs font-semibold text-amber-700">后期剪辑与运营反馈</div>
+                                </div>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-600">
+                                负责教学视频后期剪辑、字幕与音效包装；制作配套小红书图文教程；持续跟踪评论区反馈并答疑，整理归档全部项目成果材料。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 协作机制与AI工具使用边界 (占5列) -->
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    <!-- 沟通协作机制 -->
+                    <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro-mint">
+                        <h3 class="text-base font-extrabold text-slate-800 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-teal-600"></i>
+                            <span>三大沟通协作机制</span>
+                        </h3>
+                        <ul class="space-y-2.5 text-xs sm:text-sm text-slate-600">
+                            <li class="flex items-start gap-2">
+                                <span class="font-bold text-teal-700 shrink-0">① 周例会同步：</span>
+                                <span>每周线上例会对齐进度、记录会议纪要，消除信息差。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="font-bold text-teal-700 shrink-0">② 组内三审制：</span>
+                                <span>策划书、脚本、成片需三人共同审阅确认后方可定稿发布。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="font-bold text-teal-700 shrink-0">③ 风险预警补位：</span>
+                                <span>微信群实时沟通，遇延期风险提前预警，全员熟悉基础流程可随时补位。</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 真实原则：AI使用边界说明 -->
+                    <div class="bg-slate-900 text-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro-pink">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-base font-extrabold text-pink-300 flex items-center gap-2">
+                                <i class="fa-solid fa-robot"></i>
+                                <span>AI 工具使用边界（如实披露）</span>
+                            </h3>
+                            <span class="text-[11px] px-2 py-0.5 rounded bg-white/10 text-teal-300 font-semibold">真实第一</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            • <strong class="text-white">独立完成部分：</strong>前期头脑风暴定题、实操录制剪辑、运营答疑及管理沟通复盘反思均由组员独立完成。<br>
+                            • <strong class="text-white">AI 辅助部分：</strong>使用 Claude/ChatGPT/Gemini/豆包辅助整理策划书初稿结构、润色脚本措辞，以及通过自然语言提示词生成教学演示网页代码。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             板块三：目前项目进度 (Current Progress)
+        =========================================== -->
+        <section id="progress" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b-2 border-pink-200 pb-3">
+                <div>
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-pink-500">SECTION 03 · CURRENT PROGRESS</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">三、目前项目进度看板</h2>
+                </div>
+                <span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    截至课堂汇报节点：核心交付物已全部上线
+                </span>
+            </div>
+
+            <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 sm:p-8 shadow-retro">
+                <!-- 总体进度条 -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between text-sm font-extrabold mb-2">
+                        <span class="text-slate-700">整体项目推进完成度</span>
+                        <span class="text-pink-600 text-lg">92%（已进入课堂汇报与持续复盘阶段）</span>
+                    </div>
+                    <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden border border-slate-300 p-0.5">
+                        <div class="h-full bg-gradient-to-r from-pink-400 via-purple-400 to-teal-400 rounded-full" style="width: 92%"></div>
+                    </div>
+                </div>
+
+                <!-- 6项交付物状态卡片网格 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- 进度 1 -->
+                    <div class="p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-emerald-700 mb-1">10.31 节点 · 已定稿</div>
+                            <h4 class="font-extrabold text-slate-800">《项目策划书》</h4>
+                            <p class="text-xs text-slate-600 mt-1">包含11大章节完整方案与分工排期</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">100%</span>
+                    </div>
+
+                    <!-- 进度 2 -->
+                    <div class="p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-emerald-700 mb-1">11.02 节点 · 已上线</div>
+                            <h4 class="font-extrabold text-slate-800">教学演示网页样例</h4>
+                            <p class="text-xs text-slate-600 mt-1">“My Mood 情绪记录”已调试通过并可演示</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">100%</span>
+                    </div>
+
+                    <!-- 进度 3 -->
+                    <div class="p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-emerald-700 mb-1">11.08 节点 · 已发布</div>
+                            <h4 class="font-extrabold text-slate-800">抖音实操教学视频</h4>
+                            <p class="text-xs text-slate-600 mt-1">《零基础AI一键搭建网页》已公开发布</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">100%</span>
+                    </div>
+
+                    <!-- 进度 4 -->
+                    <div class="p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-emerald-700 mb-1">11.08 节点 · 已发布</div>
+                            <h4 class="font-extrabold text-slate-800">小红书图文教程</h4>
+                            <p class="text-xs text-slate-600 mt-1">配套保姆级步骤图文笔记已上线引流</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">100%</span>
+                    </div>
+
+                    <!-- 进度 5 -->
+                    <div class="p-4 rounded-2xl border-2 border-amber-200 bg-amber-50/50 flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-amber-700 mb-1">持续进行中 · 运营期</div>
+                            <h4 class="font-extrabold text-slate-800">评论区答疑与数据收集</h4>
+                            <p class="text-xs text-slate-600 mt-1">已收获首批真实互动，仍在持续统计数据</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-amber-500 text-white text-xs font-bold shrink-0">进行中</span>
+                    </div>
+
+                    <!-- 进度 6 -->
+                    <div class="p-4 rounded-2xl border-2 border-pink-200 bg-pink-50/50 flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-pink-700 mb-1">11.20 - 今日 · 收尾阶段</div>
+                            <h4 class="font-extrabold text-slate-800">课堂分享与期末报告修订</h4>
+                            <p class="text-xs text-slate-600 mt-1">收集倾听组同学建议后完善最终归档报告</p>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-pink-500 text-white text-xs font-bold shrink-0">85%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             板块四：最终作品呈现方式 (Deliverables & Showcase)
+             核心互动展示区：策划书 + 抖音 + 小红书 + My Mood 实操试玩
+        =========================================== -->
+        <section id="showcase" class="scroll-mt-24 space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b-2 border-teal-300 pb-3">
+                <div>
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-teal-600">SECTION 04 · FINAL DELIVERABLES SHOWCASE</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">四、最终作品呈现方式（课堂现场互动体验）</h2>
+                </div>
+                <p class="text-sm text-pink-600 font-bold">👇 点击下方卡片可直接打开链接、查阅策划书或体验演示网页</p>
+            </div>
+
+            <!-- 顶部三大核心成果资源卡片：策划书 + 抖音视频 + 小红书图文 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- 卡片 1：项目策划书在线查阅 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro flex flex-col justify-between hover:-translate-y-1 transition">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 text-xs font-extrabold border border-indigo-200">
+                                <i class="fa-solid fa-book-open mr-1"></i> 文档成果 · 完整方案
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">PDF / 8页</span>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-800 mb-2">《项目策划书：VibeCoding》</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            涵盖项目背景、双维度目标、11项任务分解、5周时间轴、三人分工机制、风险预案及 AI 工具使用边界说明。
+                        </p>
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs text-slate-600 space-y-1 mb-5">
+                            <div>📌 <strong>核心原则：</strong>有趣、简单、有价值、好落地</div>
+                            <div>📌 <strong>交付标准：</strong>1网页 + 1视频 + 1图文 + 复盘报告</div>
+                        </div>
+                    </div>
+                    <button onclick="openPlanModal()" class="w-full py-3.5 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>点击在线展开查阅策划书核心内容</span>
+                    </button>
+                </div>
+
+                <!-- 卡片 2：抖音实操教学视频 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro-pink flex flex-col justify-between hover:-translate-y-1 transition">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-extrabold border border-rose-200">
+                                <i class="fa-brands fa-tiktok mr-1"></i> 视频成果 · 实操教学
+                            </span>
+                            <span class="text-xs font-bold text-rose-500">抖音平台已发布</span>
+                        </div>
+                        <h3 class="text-lg font-black text-slate-800 mb-2 leading-snug">
+                            “我不想慢慢学代码了，厉娜🥺 零基础AI一键搭建网页...”
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-3">创作者账号：@tomasahito（第二小组作品）</p>
+                        <div class="bg-rose-50/80 rounded-xl p-3 border border-rose-200 text-xs text-slate-700 font-mono break-all mb-5">
+                            6.99 复制打开抖音，看看【tomasahito的作品】我不想慢慢学代码了，厉娜🥺 零基础AI一键搭建网页... https://v.douyin.com/0Lk6wJmylJw/ b@N.jP :5pm 08/22 dAT:/
+                        </div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <a href="https://v.douyin.com/0Lk6wJmylJw/" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-pink-400"></i>
+                            <span>浏览器直接打开抖音视频链接</span>
+                        </a>
+                        <button onclick="copyDouyinCode()" class="w-full py-2.5 px-4 rounded-2xl bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>一键复制抖音口令（手机打开抖音直达）</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 卡片 3：小红书图文教程 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro-mint flex flex-col justify-between hover:-translate-y-1 transition">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-red-100 text-red-600 text-xs font-extrabold border border-red-200">
+                                <i class="fa-solid fa-book-bookmark mr-1"></i> 图文成果 · 配套教程
+                            </span>
+                            <span class="text-xs font-bold text-teal-700">小红书已发布</span>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-800 mb-2">
+                            零基础 AI 网页制作保姆级图文教程
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            将视频中的实操步骤拆解为清晰图文卡片，整理提示词模板与部署要点，方便零基础学习者随时收藏对照操作。
+                        </p>
+                        <div class="bg-teal-50/70 rounded-xl p-3 border border-teal-200 text-xs text-teal-900 space-y-1 mb-5">
+                            <div>✨ <strong>呈现形式：</strong>封面图 + 分步操作图解 + 提示词模板</div>
+                            <div>✨ <strong>链接状态：</strong>支持电脑端与手机端直接浏览</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <a href="https://www.xiaohongshu.com/explore/6b043e6a000000002303f5c7?xsec_token=CBEExSqqEboZNQfpw85jdJt-0jGcNOc6Wk6EB9KZf9LEg=&xsec_source=app_share" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>直接查看小红书图文帖子</span>
+                        </a>
+                        <button onclick="copyXhsUrl()" class="w-full py-2.5 px-4 rounded-2xl bg-teal-100 hover:bg-teal-200 text-teal-800 border border-teal-300 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-link"></i>
+                            <span>复制小红书帖子链接分享给同学</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部核心亮点：教学演示网页现场可交互预览（还原封面 My Mood 情绪记录网页） -->
+            <div id="mymood-demo" class="bg-gradient-to-br from-pink-100/80 via-white to-teal-100/80 rounded-3xl border-2 border-slate-800 p-6 sm:p-8 shadow-retro">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-bold mb-2">
+                            <i class="fa-solid fa-desktop text-teal-300"></i> 教学演示网页样例 · 现场可交互体验
+                        </span>
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-800">
+                            《My Mood 记录今天的心情》— AI 零代码生成网页成品展示
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                            这就是我们视频教程中带领零基础用户用一句话提示词生成的网页！<strong>欢迎老师和倾听组同学直接点击下方表情按钮体验：</strong>
+                        </p>
+                    </div>
+                    <div class="text-xs font-mono bg-white/90 px-3.5 py-2 rounded-xl border border-slate-300 text-slate-600 shrink-0">
+                        URL: https://vibecoding.cn/my-mood
+                    </div>
+                </div>
+
+                <!-- 模拟浏览器外框 -->
+                <div class="max-w-3xl mx-auto bg-white rounded-3xl border-2 border-slate-800 shadow-xl overflow-hidden">
+                    <!-- 浏览器顶栏 -->
+                    <div class="bg-slate-100 px-4 py-2.5 border-b-2 border-slate-200 flex items-center gap-3">
+                        <div class="win-dots flex gap-1.5">
+                            <span class="bg-rose-400"></span>
+                            <span class="bg-amber-400"></span>
+                            <span class="bg-emerald-400"></span>
+                        </div>
+                        <div class="flex-1 bg-white rounded-full px-3 py-1 text-xs text-slate-500 font-mono border border-slate-200 flex items-center justify-between">
+                            <span><i class="fa-solid fa-lock text-emerald-500 mr-1.5"></i>https://vibecoding.cn</span>
+                            <span class="text-[10px] text-pink-500 font-sans font-bold">VibeCoding 教学样例</span>
+                        </div>
+                    </div>
+
+                    <!-- My Mood 网页内部交互区 -->
+                    <div id="mood-canvas" class="p-6 sm:p-8 bg-gradient-to-b from-pink-50 to-teal-50/70 transition-colors duration-500 text-center space-y-6">
+                        <div>
+                            <h4 class="font-cute text-3xl sm:text-4xl text-slate-800 tracking-wide">My Mood</h4>
+                            <p class="text-sm sm:text-base text-slate-600 font-medium mt-1">记录今天的心情 ♡ 和情绪和解，从记录开始</p>
+                        </div>
+
+                        <!-- 四个心情选择按钮 -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-xl mx-auto">
+                            <button onclick="selectMood('happy')" class="mood-btn group bg-white hover:bg-amber-50 border-2 border-slate-200 hover:border-amber-400 rounded-2xl p-4 shadow-sm hover:shadow-md transition transform hover:-translate-y-1 flex flex-col items-center gap-2">
+                                <span class="text-4xl group-hover:scale-110 transition">😄</span>
+                                <span class="font-extrabold text-slate-700 text-sm">开心</span>
+                            </button>
+                            <button onclick="selectMood('sad')" class="mood-btn group bg-white hover:bg-sky-50 border-2 border-slate-200 hover:border-sky-400 rounded-2xl p-4 shadow-sm hover:shadow-md transition transform hover:-translate-y-1 flex flex-col items-center gap-2">
+                                <span class="text-4xl group-hover:scale-110 transition">😔</span>
+                                <span class="font-extrabold text-slate-700 text-sm">难过</span>
+                            </button>
+                            <button onclick="selectMood('angry')" class="mood-btn group bg-white hover:bg-rose-50 border-2 border-slate-200 hover:border-rose-400 rounded-2xl p-4 shadow-sm hover:shadow-md transition transform hover:-translate-y-1 flex flex-col items-center gap-2">
+                                <span class="text-4xl group-hover:scale-110 transition">😠</span>
+                                <span class="font-extrabold text-slate-700 text-sm">生气</span>
+                            </button>
+                            <button onclick="selectMood('tired')" class="mood-btn group bg-white hover:bg-purple-50 border-2 border-slate-200 hover:border-purple-400 rounded-2xl p-4 shadow-sm hover:shadow-md transition transform hover:-translate-y-1 flex flex-col items-center gap-2">
+                                <span class="text-4xl group-hover:scale-110 transition">🥱</span>
+                                <span class="font-extrabold text-slate-700 text-sm">疲惫</span>
+                            </button>
+                        </div>
+
+                        <!-- 情绪垃圾桶输入与投递区 -->
+                        <div class="max-w-lg mx-auto bg-white/90 rounded-2xl p-4 border border-pink-200 shadow-sm space-y-3">
+                            <div id="mood-reply" class="text-sm font-bold text-pink-600">
+                                👆 点击上方任意一个心情图标，看看 AI 网页给你的温暖回应吧~
+                            </div>
+                            <div class="flex gap-2">
+                                <input id="mood-note-input" type="text" placeholder="写下一句此刻的想法，丢进情绪垃圾桶..." class="flex-1 px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:outline-none focus:border-teal-400">
+                                <button onclick="saveMoodNote()" class="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-bold text-xs sm:text-sm shrink-0 transition">
+                                    记录心情 ✨
+                                </button>
+                            </div>
+                            <!-- 实时心情便签墙 -->
+                            <div id="mood-history" class="flex flex-wrap justify-center gap-2 pt-1">
+                                <span class="text-xs px-2.5 py-1 rounded-full bg-pink-100 text-pink-700">😄 课堂展示顺利！</span>
+                                <span class="text-xs px-2.5 py-1 rounded-full bg-teal-100 text-teal-800">✨ 原来AI做网页这么简单</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             板块五：目前的主要难点与真实反思 (Challenges & Honest Reflections)
+        =========================================== -->
+        <section id="challenges" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b-2 border-amber-300 pb-3">
+                <div>
+                    <span class="text-xs font-extrabold tracking-widest uppercase text-amber-600">SECTION 05 · HONEST CHALLENGES & REFLECTIONS</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-800 mt-1">五、目前的主要难点与真实反思（实事求是）</h2>
+                </div>
+                <span class="text-xs sm:text-sm font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
+                    秉持“真实为第一原则”，不美化、不回避痛点
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 难点 1：技术与部署稳定性 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 rounded-xl bg-rose-100 text-rose-700 font-extrabold text-xs">难点一 · 技术落地</span>
+                        <i class="fa-solid fa-bug text-rose-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-slate-800">AI 生成代码偶发错乱 & 跨设备访问受限</h3>
+                    <div class="space-y-2 text-sm text-slate-600">
+                        <p><strong class="text-slate-800">真实痛点：</strong>初期向 AI 输入模糊提示词时，生成的网页经常出现手机端排版错位或按钮失效；同时，纯本地 HTML 文件无法直接发链接让其他电脑打开。</p>
+                        <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-900">
+                            <strong>✅ 解决对策：</strong>拆解提示词结构（明确配色、布局与交互逻辑）进行多轮调试；将单文件源码部署托管并保留本地源码双备份，确保课堂展示万无一失。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 难点 2：受众沟通与传播冷启动 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 rounded-xl bg-amber-100 text-amber-800 font-extrabold text-xs">难点二 · 沟通与传播</span>
+                        <i class="fa-solid fa-bullhorn text-amber-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-slate-800">零基础教学“降维”难 & 账号冷启动流量有限</h3>
+                    <div class="space-y-2 text-sm text-slate-600">
+                        <p><strong class="text-slate-800">真实痛点：</strong>如何把“HTML、源码、部署”讲得让完全不懂代码的小白听懂是一大挑战；此外新号初期自然推荐流量有限，外部真实反馈收集速度偏慢。</p>
+                        <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-900">
+                            <strong>✅ 解决对策：</strong>摒弃枯燥代码讲解，采用“痛点共鸣标题（如‘我不想慢慢学代码了’）+ 视觉化对比”；借助班级群、校园社群转发破冰，积极回复每条留言。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 难点 3：时间管理与跨环节衔接 -->
+                <div class="bg-white rounded-3xl border-2 border-slate-800 p-6 shadow-retro space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 rounded-xl bg-indigo-100 text-indigo-800 font-extrabold text-xs">难点三 · 时间与协作</span>
+                        <i class="fa-solid fa-hourglass-half text-indigo-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-slate-800">录屏剪辑耗时超预期 & 课程作业并行压力</h3>
+                    <div class="space-y-2 text-sm text-slate-600">
+                        <p><strong class="text-slate-800">真实痛点：</strong>实操教学既要保证操作流畅又要兼顾配音节奏，录屏重录与字幕剪辑耗时超出原计划；期中阶段组员同时面临多门课程任务。</p>
+                        <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-900">
+                            <strong>✅ 解决对策：</strong>严格执行策划书中的“内部前置截止日期”留出缓冲时间；图文教程与视频剪辑并行推进，组员之间主动分担审稿与文案工作。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             板块六：课堂实训互动区（收集倾听组建议）
+        =========================================== -->
+        <section id="feedback" class="scroll-mt-24">
+            <div class="bg-slate-900 text-white rounded-3xl border-2 border-slate-800 p-6 sm:p-10 shadow-retro-mint">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- 左侧引导 -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30 text-xs font-bold">
+                            <i class="fa-solid fa-ear-listen"></i> 作品分享与建议会 · 现场互动
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-white">
+                            感谢聆听！欢迎“倾听组”同学与老师提出宝贵建议 💬
+                        </h2>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            根据今晚《管理沟通》实训规则，我们非常期待听到倾听组同学对我们项目创意、视频教学清晰度、网页呈现方式的真实反馈与改进建议！
+                        </p>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1.5">
+                            <div class="font-bold text-pink-300">📌 汇报人：第二小组（黄晓琳、郑楹、赖俊中）</div>
+                            <div>💡 现场记录的每一条建议，我们都会整理进最终版《项目成果总结报告》的复盘章节中！</div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧现场建议实时上墙表单 -->
+                    <div class="lg:col-span-7 bg-white text-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-extrabold text-base sm:text-lg text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square text-pink-500"></i>
+                                <span>课堂现场建议记录墙</span>
+                            </h3>
+                            <span id="suggestion-count" class="text-xs font-bold px-2.5 py-1 rounded-full bg-pink-100 text-pink-700">已记录 2 条</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <input id="listener-group" type="text" placeholder="倾听组别（如：第4组）" class="px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-pink-400">
+                            <input id="listener-suggestion" type="text" placeholder="输入建议或提问内容..." class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-pink-400">
+                        </div>
+                        <div class="flex justify-end">
+                            <button onclick="addSuggestion()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-teal-500 hover:opacity-95 text-white font-bold text-xs sm:text-sm shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>记录到展示墙上</span>
+                            </button>
+                        </div>
+
+                        <!-- 建议列表容器 -->
+                        <div id="suggestion-list" class="space-y-2.5 max-h-56 overflow-y-auto pr-1 pt-2 border-t border-slate-100">
+                            <div class="p-3 rounded-xl bg-pink-50/70 border border-pink-200 flex items-start justify-between gap-2 text-xs sm:text-sm">
+                                <div>
+                                    <span class="font-extrabold text-pink-700 mr-2">[示例 · 倾听组]</span>
+                                    <span class="text-slate-700">网页的粉色薄荷绿风格和策划书封面非常统一，建议可以把常用的AI提示词模板直接放在主页方便大家一键复制！</span>
+                                </div>
+                                <span class="text-[11px] text-slate-400 shrink-0">刚刚</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-teal-50/70 border border-teal-200 flex items-start justify-between gap-2 text-xs sm:text-sm">
+                                <div>
+                                    <span class="font-extrabold text-teal-700 mr-2">[示例 · 倾听组]</span>
+                                    <span class="text-slate-700">抖音视频标题很抓眼球，如果小红书评论区能置顶在线演示链接，转化效果会更好。</span>
+                                </div>
+                                <span class="text-[11px] text-slate-400 shrink-0">刚刚</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="border-t border-pink-200/80 bg-white/80 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-slate-500">
+            <div class="font-semibold text-slate-700">
+                《管理沟通》课程期末实训展示 · 第二小组（黄晓琳、郑楹、赖俊中）
+            </div>
+            <div>
+                VibeCoding — AI 网页制作技能教学 | 真实为第一原则
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         弹窗模态框：项目策划书在线结构化查阅面板
+    =========================================== -->
+    <div id="plan-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[88vh] rounded-3xl border-2 border-slate-800 shadow-2xl flex flex-col overflow-hidden">
+            <!-- 弹窗头部 -->
+            <div class="px-6 py-4 bg-gradient-to-r from-pink-100 to-teal-100 border-b-2 border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-black text-base sm:text-lg text-slate-800">《项目策划书：VibeCoding—AI 网页制作技能教学》</h3>
+                        <p class="text-xs text-slate-600">《管理沟通》第二小组 · 核心内容结构化速览</p>
+                    </div>
+                </div>
+                <button onclick="closePlanModal()" class="w-9 h-9 rounded-xl bg-white hover:bg-rose-100 text-slate-700 hover:text-rose-600 border border-slate-300 flex items-center justify-center font-bold transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- 弹窗标签切换栏 -->
+            <div class="px-6 pt-3 bg-slate-50 border-b border-slate-200 flex gap-2 overflow-x-auto text-xs sm:text-sm font-bold">
+                <button onclick="switchPlanTab('tab-basic')" id="btn-tab-basic" class="plan-tab-btn px-4 py-2 rounded-t-xl bg-white text-pink-600 border-t-2 border-x border-pink-300">一、基本信息与目标</button>
+                <button onclick="switchPlanTab('tab-tasks')" id="btn-tab-tasks" class="plan-tab-btn px-4 py-2 rounded-t-xl text-slate-600 hover:text-slate-900">二、11项任务拆解表</button>
+                <button onclick="switchPlanTab('tab-risk')" id="btn-tab-risk" class="plan-tab-btn px-4 py-2 rounded-t-xl text-slate-600 hover:text-slate-900">三、风险应对与资源</button>
+            </div>
+
+            <!-- 弹窗滚动内容区 -->
+            <div class="p-6 overflow-y-auto space-y-5 text-sm text-slate-700 leading-relaxed">
+                <!-- Tab 1: 基本信息与目标 -->
+                <div id="tab-basic" class="plan-tab-content space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-pink-50/60 p-4 rounded-2xl border border-pink-200">
+                        <div><strong>项目名称：</strong>VibeCoding — AI 网页制作技能教学</div>
+                        <div><strong>课程名称：</strong>《管理沟通》</div>
+                        <div><strong>小组成员：</strong>第二小组（黄晓琳、郑楹、赖俊中）</div>
+                        <div><strong>项目周期：</strong>2026年10月22日 — 11月20日（5周）</div>
+                        <div><strong>核心理念：</strong>降低数字创作门槛，用AI赋能创意落地</div>
+                        <div><strong>基本原则：</strong>有趣、简单、有价值、好落地</div>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 mb-2">对外衡量标准（社会价值与传播）：</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                            <li><strong>内容产出：</strong>1个教学网页样例 + 1份图文制作教程 + 1条实操教学视频。</li>
+                            <li><strong>技能教学：</strong>学习者在评论区反馈“学会操作”，实现个人创意落地。</li>
+                            <li><strong>传播影响：</strong>各平台累计浏览量达 1000+，观众点赞达 50+。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 mb-2">对内衡量标准（团队沟通与成长）：</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                            <li><strong>沟通效果：</strong>任务按期完成，留存小组周例会纪要；及时回复评论区留言答疑。</li>
+                            <li><strong>能力提升：</strong>锻炼管理沟通、内容创作、新媒体运营与人机协作综合能力。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 2: 11项任务拆解 -->
+                <div id="tab-tasks" class="plan-tab-content hidden">
+                    <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-teal-50 text-teal-900 font-extrabold border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3">阶段</th>
+                                    <th class="p-3">任务内容</th>
+                                    <th class="p-3">截止节点</th>
+                                    <th class="p-3">核心目标要求</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr><td class="p-3 font-bold text-pink-600">准备期</td><td class="p-3 font-semibold">1. 项目策划书撰写</td><td class="p-3 font-mono">10月31日前</td><td class="p-3">逻辑清晰、覆盖全流程的完整策划书</td></tr>
+                                <tr><td class="p-3 font-bold text-pink-600">准备期</td><td class="p-3 font-semibold">2. 教学内容梳理</td><td class="p-3 font-mono">11月02日前</td><td class="p-3">通俗易懂、步骤清晰的视频讲解脚本</td></tr>
+                                <tr><td class="p-3 font-bold text-pink-600">准备期</td><td class="p-3 font-semibold">3. 教学演示网页制作</td><td class="p-3 font-mono">11月02日前</td><td class="p-3">可正常运行、美观稳定的演示网页</td></tr>
+                                <tr><td class="p-3 font-bold text-teal-600">执行期</td><td class="p-3 font-semibold">4-5. 教学视频录制与剪辑</td><td class="p-3 font-mono">11月06日前</td><td class="p-3">画面清晰、字幕准确、节奏流畅的成品视频</td></tr>
+                                <tr><td class="p-3 font-bold text-teal-600">执行期</td><td class="p-3 font-semibold">6. 图文教程制作</td><td class="p-3 font-mono">11月06日前</td><td class="p-3">步骤完整、排版美观的独立图文资料</td></tr>
+                                <tr><td class="p-3 font-bold text-teal-600">执行期</td><td class="p-3 font-semibold">7-8. 发布推广与收集反馈</td><td class="p-3 font-mono">11月10日前</td><td class="p-3">完成多平台发布并及时为学习者答疑</td></tr>
+                                <tr><td class="p-3 font-bold text-indigo-600">复盘期</td><td class="p-3 font-semibold">9-11. 成果归档、数据分析与报告</td><td class="p-3 font-mono">11月19日前</td><td class="p-3">数据真实客观、反思深刻的项目总结报告</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 3: 风险应对与资源 -->
+                <div id="tab-risk" class="plan-tab-content hidden space-y-3">
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="font-extrabold text-slate-800">⏱️ 时间风险应对</div>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">设置内部前置截止日期预留缓冲时间；优先保障核心交付物（网页+视频+策划书）按期完成。</p>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="font-extrabold text-slate-800">💻 技术风险应对</div>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">提前多轮测试演示网页；准备备用提示词与本地保存网页源码，防止现场演示链接网络异常。</p>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="font-extrabold text-slate-800">📣 传播与协作风险应对</div>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">多平台同步分发并借助校园社群转发；全员文档共享，遇到组员临时有事可随时互助补位。</p>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-200">
+                        <div class="font-extrabold text-teal-900">🧰 可利用工具资源</div>
+                        <p class="text-xs sm:text-sm text-teal-800 mt-1">GitHub、Claude、ChatGPT、Gemini、豆包；抖音、小红书、B站及校内社群载体。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 弹窗底部 -->
+            <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-end">
+                <button onclick="closePlanModal()" class="px-5 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs sm:text-sm hover:bg-slate-800 transition">
+                    关闭查阅面板
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         交互逻辑脚本
+    =========================================== -->
+    <script>
+        // 1. 优雅 Toast 提示函数（替代 alert）
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            toastMsg.textContent = message;
+            toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 3200);
+        }
+
+        // 2. 兼容所有浏览器的文本复制函数（使用 execCommand）
+        function copyTextToClipboard(text, successTip) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(successTip);
+            } catch (err) {
+                showToast('复制失败，请手动选中链接复制');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // 复制抖音完整口令
+        function copyDouyinCode() {
+            const douyinShareText = '6.99 复制打开抖音，看看【tomasahito的作品】我不想慢慢学代码了，厉娜🥺 零基础AI一键搭建网页... https://v.douyin.com/0Lk6wJmylJw/ b@N.jP :5pm 08/22 dAT:/';
+            copyTextToClipboard(douyinShareText, '已复制抖音视频口令！打开手机抖音即可直接观看 🎬');
+        }
+
+        // 复制小红书链接
+        function copyXhsUrl() {
+            const xhsUrl = 'https://www.xiaohongshu.com/explore/6b043e6a000000002303f5c7?xsec_token=CBEExSqqEboZNQfpw85jdJt-0jGcNOc6Wk6EB9KZf9LEg=&xsec_source=app_share';
+            copyTextToClipboard(xhsUrl, '已复制小红书图文教程链接！可发送至微信或浏览器打开 📕');
+        }
+
+        // 3. 策划书弹窗控制与标签切换
+        function openPlanModal() {
+            const modal = document.getElementById('plan-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePlanModal() {
+            const modal = document.getElementById('plan-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function switchPlanTab(tabId) {
+            // 隐藏所有内容
+            document.querySelectorAll('.plan-tab-content').forEach(el => el.classList.add('hidden'));
+            // 重置所有按钮样式
+            document.querySelectorAll('.plan-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-pink-600', 'border-t-2', 'border-x', 'border-pink-300');
+                btn.classList.add('text-slate-600');
+            });
+            // 激活当前标签
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('bg-white', 'text-pink-600', 'border-t-2', 'border-x', 'border-pink-300');
+            activeBtn.classList.remove('text-slate-600');
+        }
+
+        // 4. My Mood 教学演示网页样例交互逻辑
+        const moodConfig = {
+            happy: {
+                emoji: '😄',
+                label: '开心',
+                reply: '😄 太棒啦！把今天的快乐存进罐子里，愿你的每一天都闪闪发光✨',
+                bgClass: 'from-amber-100/80 to-pink-100/80'
+            },
+            sad: {
+                emoji: '😔',
+                label: '难过',
+                reply: '🫂 抱抱你~ 难过也没关系，允许自己慢下来，乌云背后一定有晴天🌤️',
+                bgClass: 'from-sky-100/80 to-teal-100/80'
+            },
+            angry: {
+                emoji: '😠',
+                label: '生气',
+                reply: '😤 深呼吸三次！把不开心的事统统丢进情绪垃圾桶，不值得的人和事快走开💨',
+                bgClass: 'from-rose-100/80 to-amber-100/80'
+            },
+            tired: {
+                emoji: '🥱',
+                label: '疲惫',
+                reply: '🍵 辛苦啦！忙碌了一整天，今晚早点休息，给自己充个满格电吧🔋',
+                bgClass: 'from-purple-100/80 to-teal-100/80'
+            }
+        };
+
+        let currentSelectedMood = '😄';
+
+        function selectMood(type) {
+            const info = moodConfig[type];
+            if (!info) return;
+            currentSelectedMood = info.emoji;
+            const replyBox = document.getElementById('mood-reply');
+            const canvas = document.getElementById('mood-canvas');
+            
+            replyBox.textContent = info.reply;
+            canvas.className = `p-6 sm:p-8 bg-gradient-to-b ${info.bgClass} transition-colors duration-500 text-center space-y-6`;
+        }
+
+        function saveMoodNote() {
+            const input = document.getElementById('mood-note-input');
+            const history = document.getElementById('mood-history');
+            const text = input.value.trim();
+            if (!text) {
+                showToast('先输入一句心情再点击记录哦~');
+                return;
+            }
+            const tag = document.createElement('span');
+            tag.className = 'text-xs px-3 py-1 rounded-full bg-white border border-pink-300 text-slate-800 font-medium shadow-sm animate-bounce';
+            tag.textContent = `${currentSelectedMood} ${text}`;
+            history.prepend(tag);
+            setTimeout(() => tag.classList.remove('animate-bounce'), 1000);
+            input.value = '';
+            showToast('已成功投入情绪便签墙！');
+        }
+
+        // 5. 课堂现场倾听组建议实时记录功能
+        let suggestionCount = 2;
+        function addSuggestion() {
+            const groupInput = document.getElementById('listener-group');
+            const textInput = document.getElementById('listener-suggestion');
+            const list = document.getElementById('suggestion-list');
+            const countBadge = document.getElementById('suggestion-count');
+
+            const groupName = groupInput.value.trim() || '倾听组同学';
+            const content = textInput.value.trim();
+
+            if (!content) {
+                showToast('请输入建议或提问内容后再提交哦~');
+                return;
+            }
+
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            const item = document.createElement('div');
+            item.className = 'p-3 rounded-xl bg-amber-50 border border-amber-300 flex items-start justify-between gap-2 text-xs sm:text-sm';
+            item.innerHTML = `
+                <div>
+                    <span class="font-extrabold text-amber-800 mr-2">[${escapeHtml(groupName)}]</span>
+                    <span class="text-slate-800 font-medium">${escapeHtml(content)}</span>
+                </div>
+                <span class="text-[11px] text-slate-400 shrink-0">${timeStr}</span>
+            `;
+
+            list.prepend(item);
+            suggestionCount++;
+            countBadge.textContent = `已记录 ${suggestionCount} 条`;
+            textInput.value = '';
+            showToast('已成功记录该条倾听组建议！感谢反馈 ✨');
+        }
+
+        // 简单防XSS转义
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, function(m) {
+                return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+            });
+        }
+
+        // 6. 大屏全屏投影切换
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {
+                    showToast('当前环境限制全屏，可按 F11 进入浏览器全屏投影');
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
